@@ -1,6 +1,7 @@
 package parse
 
 import (
+	word "Simple_English_wordBook/model"
 	"log"
 	"net/http"
 	"strings"
@@ -8,26 +9,15 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-type searchWord struct {
-	sWord    string
-	meanings string
-	example  string
-}
-
-// method for type searchWord
-func (this searchWord) String() string {
-	return this.sWord + " " + this.meanings + " " + this.example
-}
-
-func Parse(word string) *searchWord {
-	var result searchWord
-	returnValue := getSearchResult(word, result)
+func Parse(term string) word.Word {
+	var result word.Word
+	returnValue := getSearchResult(term, result)
 	return returnValue
 }
 
 // Get the result after searching
-func getSearchResult(word string, result searchWord) *searchWord {
-	var baseURL = "https://dic.daum.net/search.do?q=" + word + "&dic=eng&search_first=Y"
+func getSearchResult(term string, result word.Word) word.Word {
+	var baseURL = "https://dic.daum.net/search.do?q=" + term + "&dic=eng&search_first=Y"
 	res, err := http.Get(baseURL)
 	checkCode(res)
 	checkErr(err)
@@ -39,22 +29,22 @@ func getSearchResult(word string, result searchWord) *searchWord {
 	meanings := doc.Find(".list_search").First().Text()
 	example := doc.Find(".box_example").First().Text()
 
-	returnValue := setSearchWord(word, meanings, example, result)
+	returnValue := setSearchWord(term, meanings, example, result)
 
 	return returnValue
 
 }
 
-// Set value of searchWord struct
-func setSearchWord(word string, meanings string, example string, result searchWord) *searchWord {
+// Set value of SearchWord struct
+func setSearchWord(word string, meanings string, example string, result word.Word) word.Word {
 	trimMeanings := CleanString(meanings)
 	trimExample := CleanString(example)
 
-	result.sWord = word
-	result.meanings = trimMeanings
-	result.example = trimExample
+	result.SetSWord(word)
+	result.SetMeanings(trimMeanings)
+	result.SetSExample(trimExample)
 
-	return &result
+	return result
 }
 
 // CleanString cleans a String

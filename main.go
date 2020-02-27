@@ -1,26 +1,41 @@
 package main
 
 import (
+	word "Simple_English_wordBook/model"
 	"Simple_English_wordBook/parse"
+	"fmt"
+	"html/template"
 	"net/http"
 	"strings"
-
-	"github.com/labstack/echo"
 )
 
-func handleHome(c echo.Context) error {
-	return c.File("index.html")
+var m word.Word
+
+func handleHome(w http.ResponseWriter, r *http.Request) {
+	indexPage, _ := template.ParseFiles("index.html")
+
+	data := struct {
+		originWord string
+		mean       string
+		ex         string
+	}{
+		originWord: m.GetSWord(),
+		mean:       m.GetMeanings(),
+		ex:         m.GetExample(),
+	}
+
+	indexPage.Execute(w, data)
 }
 
-func handleParse(c echo.Context) error {
-	word := strings.ToLower(parse.CleanString(c.FormValue("word")))
-	sWord := parse.Parse(word)
-	return c.String(http.StatusOK, sWord.String())
+func handleParse(w http.ResponseWriter, r *http.Request) {
+	defer http.Redirect(w, r, "/", http.StatusFound)
+	word := strings.ToLower(parse.CleanString(r.FormValue("word")))
+	m = parse.Parse(word)
 }
 
 func main() {
-	e := echo.New()
-	e.GET("/", handleHome)
-	e.GET("/word", handleParse)
-	e.Logger.Fatal(e.Start(":8080"))
+	fmt.Println("Server connecting...")
+	http.HandleFunc("/", handleHome)
+	http.HandleFunc("/word", handleParse)
+	http.ListenAndServe(":8080", nil)
 }
