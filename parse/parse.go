@@ -1,7 +1,6 @@
 package parse
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -15,14 +14,19 @@ type searchWord struct {
 	example  string
 }
 
-func Parse(word string) {
+// method for type searchWord
+func (this searchWord) String() string {
+	return this.sWord + " " + this.meanings + " " + this.example
+}
+
+func Parse(word string) *searchWord {
 	var result searchWord
-	c := make(chan searchWord)
-	getSearchResult(word, c)
+	returnValue := getSearchResult(word, result)
+	return returnValue
 }
 
 // Get the result after searching
-func getSearchResult(word string, c chan<- searchWord) {
+func getSearchResult(word string, result searchWord) *searchWord {
 	var baseURL = "https://dic.daum.net/search.do?q=" + word + "&dic=eng&search_first=Y"
 	res, err := http.Get(baseURL)
 	checkCode(res)
@@ -35,20 +39,22 @@ func getSearchResult(word string, c chan<- searchWord) {
 	meanings := doc.Find(".list_search").First().Text()
 	example := doc.Find(".box_example").First().Text()
 
-	setSearchWord(word, meanings, example, c)
+	returnValue := setSearchWord(word, meanings, example, result)
+
+	return returnValue
 
 }
 
 // Set value of searchWord struct
-func setSearchWord(word string, meanings string, example string, c chan<- searchWord) {
+func setSearchWord(word string, meanings string, example string, result searchWord) *searchWord {
 	trimMeanings := CleanString(meanings)
 	trimExample := CleanString(example)
 
-	c <- searchWord{
-		sWord: word,
-		meanings: meanings
-		example: example
-	}
+	result.sWord = word
+	result.meanings = trimMeanings
+	result.example = trimExample
+
+	return &result
 }
 
 // CleanString cleans a String
