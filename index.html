@@ -2,16 +2,34 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>English_wordBook</title>
+
+    <script type="text/javascript">
+        function search() {
+            var term = document.getElementById('term').value;
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log(xhr.responseText)
+                    var resultData = JSON.parse(xhr.responseText);
+                    var divResult = document.getElementById("result")
+                    divResult.append(resultData.SWord)
+                    divResult.append(resultData.Meanings)
+                    divResult.append(resultData.Example)
+                    }
+                }
+            xhr.open('GET', '/word?term=' + term, true);
+            xhr.send();
+        };
+    </script>
+
 </head>
 <body>
     <h1>Test</h1>
     <h3>Simple English wordBook</h3>
-    <form method="GET" action="/word">
-        <input placeholder="What do you want" name="word">
-        <button>Search</button>
-    </form>
-    <div>
-    {{ .originWord}}
-    </div>
+    <input placeholder="What do you want" id="term" name="term">
+    <button onclick="search()">Search</button>
+
+    <p id='result'>
+    </p>
 </body>
 </html>

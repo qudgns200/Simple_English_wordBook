@@ -40,9 +40,9 @@ func setSearchWord(word string, meanings string, example string, result word.Wor
 	trimMeanings := CleanString(meanings)
 	trimExample := CleanString(example)
 
-	result.SetSWord(word)
-	result.SetMeanings(trimMeanings)
-	result.SetSExample(trimExample)
+	result.SWord = word
+	result.Meanings = trimMeanings
+	result.Example = trimExample
 
 	return result
 }
