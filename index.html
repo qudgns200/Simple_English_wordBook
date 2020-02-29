@@ -11,10 +11,12 @@
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     console.log(xhr.responseText)
                     var resultData = JSON.parse(xhr.responseText);
-                    var divResult = document.getElementById("result")
-                    divResult.append(resultData.SWord)
-                    divResult.append(resultData.Meanings)
-                    divResult.append(resultData.Example)
+                    var divResult1 = document.getElementById("resultWord")
+                    var divResult2 = document.getElementById("resultMeanings")
+                    var divResult3 = document.getElementById("resultExample")
+                    divResult1.append(resultData.SWord)
+                    divResult2.append(resultData.Meanings)
+                    divResult3.append(resultData.Example)
                     }
                 }
             xhr.open('GET', '/word?term=' + term, true);
@@ -28,8 +30,11 @@
     <h3>Simple English wordBook</h3>
     <input placeholder="What do you want" id="term" name="term">
     <button onclick="search()">Search</button>
-
-    <p id='result'>
+    <p id='resultWord'>
+    </p>
+    <p id='resultMeanings'>
+    </p>
+    <p id='resultExample'>
     </p>
 </body>
 </html>
