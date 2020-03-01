@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>English_wordBook</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
 
     <script type="text/javascript">
         function search() {
@@ -26,15 +27,44 @@
 
 </head>
 <body>
-    <h1>Test</h1>
-    <h3>Simple English wordBook</h3>
-    <input placeholder="What do you want" id="term" name="term">
-    <button onclick="search()">Search</button>
-    <p id='resultWord'>
-    </p>
-    <p id='resultMeanings'>
-    </p>
-    <p id='resultExample'>
-    </p>
+    <div class="bd-main-container container">
+        <section class="hero is-warning is-bold is-medium">
+            <div class="hero-body has-text-centered">
+              <div class="container">
+                <h1 class="title">
+                  Simple English wordBook
+                </h1>
+                <h2 class="subtitle">
+                  (Daum, Cambridge)
+                </h2>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="container">
+                <div class="field">
+                    <label class="label">Input Word</label>
+                    <div class="control">
+                      <input class="input is-large" type="text" placeholder="What do you want to search?" id="term" name="term">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                      <button class="button is-medium is-fullwidth is-link" onclick="search()">Search</button>
+                    </div>
+                </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <p id='resultWord'>
+            </p>
+            <p id='resultMeanings'>
+            </p>
+            <p id='resultExample'>
+            </p>
+          </section>
+    </div>
 </body>
 </html>
