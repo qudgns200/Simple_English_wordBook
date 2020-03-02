@@ -4,8 +4,11 @@ import (
 	word "Simple_English_wordBook/model"
 	"Simple_English_wordBook/parse"
 	"encoding/json"
+	"fmt"
 	"html/template"
+	"log"
 	"net/http"
+	"os"
 )
 
 func handleHome(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +43,27 @@ func ajaxHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", handleHome)
-	http.HandleFunc("/word", ajaxHandler)
-	http.ListenAndServe(":8080", nil)
+	// http.HandleFunc("/", handleHome)
+	// http.HandleFunc("/word", ajaxHandler)
+	// http.ListenAndServe(":8080", nil)
+
+	port := GetPort()
+	log.Println("[-] Listening on...", port)
+	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
+		fmt.Fprintln(res, "hello, world")
+	})
+
+	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func GetPort() string {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "4747"
+		log.Println("[-] No PORT environment variable detected. Setting to ", port)
+	}
+	return ":" + port
 }
