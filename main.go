@@ -4,7 +4,6 @@ import (
 	word "Simple_English_wordBook/model"
 	"Simple_English_wordBook/parse"
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -43,15 +42,15 @@ func ajaxHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	// http.HandleFunc("/", handleHome)
-	// http.HandleFunc("/word", ajaxHandler)
+	http.HandleFunc("/", handleHome)
+	http.HandleFunc("/word", ajaxHandler)
 	// http.ListenAndServe(":8080", nil)
 
 	port := GetPort()
 	log.Println("[-] Listening on...", port)
-	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
-		fmt.Fprintln(res, "hello, world")
-	})
+	// http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
+	// 	fmt.Fprintln(res, "hello, world")
+	// })
 
 	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 	if err != nil {
