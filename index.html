@@ -12,12 +12,18 @@
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     console.log(xhr.responseText)
                     var resultData = JSON.parse(xhr.responseText);
-                    var divResult1 = document.getElementById("resultWord")
-                    var divResult2 = document.getElementById("resultMeanings")
-                    var divResult3 = document.getElementById("resultExample")
-                    divResult1.append(resultData.SWord)
-                    divResult2.append(resultData.Meanings)
-                    divResult3.append(resultData.Example)
+                    var divResult1 = document.getElementById("resultWord1")
+                    var divResult2 = document.getElementById("resultMeanings1")
+                    var divResult3 = document.getElementById("resultExample1")
+                    var divResult11 = document.getElementById("resultWord2")
+                    var divResult22 = document.getElementById("resultMeanings2")
+                    var divResult33 = document.getElementById("resultExample2")
+                    divResult1.append(resultData[0].SWord)
+                    divResult2.append(resultData[0].Meanings)
+                    divResult3.append(resultData[0].Example)
+                    divResult11.append(resultData[1].SWord)
+                    divResult22.append(resultData[1].Meanings)
+                    divResult33.append(resultData[1].Example)
                     }
                 }
             xhr.open('GET', '/word?term=' + term, true);
@@ -28,7 +34,7 @@
 </head>
 <body>
     <div class="bd-main-container container">
-        <section class="hero is-warning is-bold is-medium">
+        <section class="hero is-warning is-bold is-small">
             <div class="hero-body has-text-centered">
               <div class="container">
                 <h1 class="title">
@@ -58,12 +64,35 @@
           </section>
 
           <section class="section">
-            <p id='resultWord'>
-            </p>
-            <p id='resultMeanings'>
-            </p>
-            <p id='resultExample'>
-            </p>
+            <div class="columns">
+              <div class="column is-half">
+                <article class="message">
+                  <div class="message-header" >
+                    <p id='resultWord1'>Daum: </p>
+                  </div>
+                  <div class="message-body">
+                      <label class="label">Mean</label>
+                      <p id='resultMeanings1'></p><br>
+                      <label class="label">Example</label>
+                      <p id='resultExample1'></p>
+                  </div>
+                </article>
+              </div>
+
+              <div class="column is-half">
+                <article class="message">
+                  <div class="message-header" >
+                    <p id='resultWord2'>Cambridge: </p>
+                  </div>
+                  <div class="message-body">
+                    <label class="label">Mean</label>
+                    <p id='resultMeanings2'></p><br>
+                    <label class="label">Example</label>
+                    <p id='resultExample2'></p>
+                  </div>
+                </article>
+              </div>
+          </div>
           </section>
     </div>
 </body>

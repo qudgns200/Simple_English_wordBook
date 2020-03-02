@@ -1,6 +1,7 @@
 package main
 
 import (
+	word "Simple_English_wordBook/model"
 	"Simple_English_wordBook/parse"
 	"encoding/json"
 	"html/template"
@@ -22,15 +23,20 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 
 // AJAX Request Handler
 func ajaxHandler(w http.ResponseWriter, r *http.Request) {
-	d := parse.Parse(r.FormValue("term"))
+	var arr []word.Word
+	d := parse.Parse(r.FormValue("term"), 0)
+	e := parse.Parse(r.FormValue("term"), 1)
+
+	arr = append(arr, d)
+	arr = append(arr, e)
 
 	// create json response from struct
-	answer, err := json.Marshal(d)
+	answer3, err := json.Marshal(arr)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
-	w.Write(answer)
+	w.Write(answer3)
 }
 
 func main() {
